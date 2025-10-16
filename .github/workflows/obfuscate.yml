@@ -79,5 +79,6 @@ jobs:
             echo "No changes to commit, the obfuscated file is already up-to-date."
           else
             git commit -m "build: Generate and obfuscate worker script"
+            git pull --rebase origin main
             git push
           fi
