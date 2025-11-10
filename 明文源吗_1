@@ -1242,24 +1242,19 @@
             const nativeList = [{ ip: workerDomain, isp: '原生地址' }];
             await addNodesFromList(nativeList);
         } else {
-            try {
-                const nativeList = [{ ip: workerDomain, isp: '原生地址' }];
-                await addNodesFromList(nativeList);
-            } catch (error) {
-                if (!currentWorkerRegion) {
-                    currentWorkerRegion = await detectWorkerRegion(request);
-                }
-                
-                const bestBackupIP = await getBestBackupIP(currentWorkerRegion);
-                if (bestBackupIP) {
-                    fallbackAddress = bestBackupIP.domain;
-                    fallbackPort = bestBackupIP.port.toString();
-                    const backupList = [{ ip: fallbackAddress, isp: 'ProxyIP-' + currentWorkerRegion }];
-                    await addNodesFromList(backupList);
-                } else {
-                    const nativeList = [{ ip: workerDomain, isp: '原生地址' }];
-                    await addNodesFromList(nativeList);
-                }
+            const nativeList = [{ ip: workerDomain, isp: '原生地址' }];
+            await addNodesFromList(nativeList);
+
+            if (!currentWorkerRegion) {
+                currentWorkerRegion = await detectWorkerRegion(request);
+            }
+            
+            const bestBackupIP = await getBestBackupIP(currentWorkerRegion);
+            if (bestBackupIP) {
+                fallbackAddress = bestBackupIP.domain;
+                fallbackPort = bestBackupIP.port.toString();
+                const backupList = [{ ip: fallbackAddress, isp: 'ProxyIP-' + bestBackupIP.region }];
+                await addNodesFromList(backupList);
             }
         }
 
@@ -2830,7 +2825,7 @@
                                 regionNames: {
                         'US': '🇺🇸 美国', 'SG': '🇸🇬 新加坡', 'JP': '🇯🇵 日本', 'HK': '🇭🇰 香港',
                         'KR': '🇰🇷 韩国', 'DE': '🇩🇪 德国', 'SE': '🇸🇪 瑞典', 'NL': '🇳🇱 荷兰',
-                        'FI': '🇫🇮 芬兰', 'GB': '🇬🇧 英国'
+                        'FI': '🇫🇮 芬兰', 'GB': '🇬🇧 英国', 'IN': '🇮🇳 印度', 'NG': '🇳🇬 尼日利亚'
                                 },
                                 customIPMode: '自定义ProxyIP模式 (p变量启用)',
                                 customIPModeDesc: '自定义IP模式 (已禁用地区匹配)',
@@ -2855,7 +2850,7 @@
                                 regionNames: {
                                     'US': '🇺🇸 آمریکا', 'SG': '🇸🇬 سنگاپور', 'JP': '🇯🇵 ژاپن', 'HK': '🇭🇰 هنگ‌کنگ',
                                     'KR': '🇰🇷 کره جنوبی', 'DE': '🇩🇪 آلمان', 'SE': '🇸🇪 سوئد', 'NL': '🇳🇱 هلند',
-                                    'FI': '🇫🇮 فنلاند', 'GB': '🇬🇧 بریتانیا'
+                                    'FI': '🇫🇮 فنلاند', 'GB': '🇬🇧 بریتانیا', 'IN': '🇮🇳 India', 'NG': '🇳🇬 Nigeria'
                                 },
                                 customIPMode: 'حالت ProxyIP سفارشی (متغیر p فعال است)',
                                 customIPModeDesc: 'حالت IP سفارشی (تطبیق منطقه غیرفعال است)',
